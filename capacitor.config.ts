@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'jon-react-iv-test',
+  appId: 'io.ionic.gettingstartediv',
+  appName: 'iv-getting-started',
   webDir: 'dist',
   server: {
     androidScheme: 'https'

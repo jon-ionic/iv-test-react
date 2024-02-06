@@ -1,7 +1,16 @@
 {
   "name": "jon-react-iv-test",
   "integrations": {
-    "capacitor": {}
+    "capacitor": {},
+    "enterprise": {
+      "keyId": 17404,
+      "productKey": "key_e1a17fae01f1415abf4d2fd599017345",
+      "appId": "b2920709",
+      "orgId": "3a7f6032-3b61-43a0-8acc-772064c26dbf",
+      "registries": [
+        "@ionic-enterprise;https://registry.ionicframework.com/"
+      ]
+    }
   },
   "type": "react-vite"
 }
