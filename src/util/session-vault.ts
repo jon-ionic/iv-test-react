@@ -1,52 +1,43 @@
 import {
+  Vault,
   BrowserVault,
   DeviceSecurityType,
   IdentityVaultConfig,
-  Vault,
   VaultType,
 } from '@ionic-enterprise/identity-vault';
 import { createVault } from './vault-factory';
 import { Session } from '../models/Session';
-import { useSyncExternalStore } from 'react';
 
 type UnlockMode =
   | 'BiometricsWithPasscode'
   | 'InMemory'
   | 'SecureStorage';
 
-const vault = createVault();
+const vault: Vault | BrowserVault = createVault();
 let session: Session | null = null;
 let listeners: any[] = [];
 
 const initializeVault = async (): Promise<void> => {
   await vault.initialize({
-    key: 'io.ionic.gettingstartediv',
+    key: 'io.ionic.gettingstartedivreact',
     type: VaultType.SecureStorage,
     deviceSecurityType: DeviceSecurityType.None,
+    lockAfterBackgrounded: 2000,
   });
-  console.log('vault initialized')
 };
 
 const setSession = async (newSession: Session): Promise<void> => {
   vault.setValue('session', newSession);
-  console.log('setting vault to', newSession)
   session = newSession;
   emitChange();
 }
 
-const getSession = async (): Promise<Session | null> => {
-  console.log('getting session...')
-  if (!session) {
-    if (await vault.isEmpty()) {
-      console.log('vault is empty...')
-      session = null;
-    } else {
-      session = await vault.getValue<Session>('session');
-    }
+const getSession = async (): Promise<void> => {
+  if (session === null) {
+    if (await vault.isEmpty()) session = null; 
+    else session = await vault.getValue<Session>('session');
   }
-  console.log('saving session variable as', session)
   emitChange()
-  return session;
 };
 
 const clearSession = async (): Promise<void> => {
@@ -97,7 +88,6 @@ const initialize = async (): Promise<void> => {
 }
 
 export {
-  initializeVault,
   subscribe,
   getSession,
   setSession,
