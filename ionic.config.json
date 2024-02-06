@@ -1,0 +1,7 @@
+{
+  "name": "jon-react-iv-test",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
