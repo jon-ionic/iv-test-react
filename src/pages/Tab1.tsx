@@ -11,12 +11,11 @@ import {
 } from '@ionic/react';
 import ExploreContainer from '../components/ExploreContainer';
 import './Tab1.css';
-import { useContext } from 'react';
-import { getSession, setSession, clearSession, lockSession, updateUnlockMode } from '../util/session-vault';
-import { SessionContext } from '../providers/SessionProvider';
+import { useSyncExternalStore } from 'react';
+import { getSession, setSession, clearSession, lockSession, updateUnlockMode, subscribe, getSnapshot } from '../util/session-vault';
 
 const Tab1: React.FC = () => {
-  const session = useContext(SessionContext)
+  const session = useSyncExternalStore(subscribe, getSnapshot)
 
   const storeClicked = async (): Promise<void> => {
     await setSession({
