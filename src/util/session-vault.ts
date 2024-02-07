@@ -32,12 +32,13 @@ const setSession = async (newSession: Session): Promise<void> => {
   emitChange();
 }
 
-const getSession = async (): Promise<void> => {
+const getSession = async (): Promise<Session | null> => {
   if (session === null) {
     if (await vault.isEmpty()) session = null; 
     else session = await vault.getValue<Session>('session');
   }
   emitChange()
+  return session;
 };
 
 const clearSession = async (): Promise<void> => {
