@@ -60,6 +60,27 @@ const updateUnlockMode = async (mode: UnlockMode): Promise<void> => {
   });
 };
 
+const lockSession = async (): Promise<void> => {
+  await vault.lock();
+  session = null;
+  emitChange();
+};
+
+const unlockSession = async (): Promise<void> => {
+  await vault.unlock();
+  session = await vault.getValue<Session>('session');
+  emitChange();
+}
+
+const sessionIsLocked = async (): Promise<boolean> => {
+  return (
+    vault.config?.type !== VaultType.SecureStorage &&
+    vault.config?.type !== VaultType.InMemory &&
+    !(await vault.isEmpty()) &&
+    (await vault.isLocked())
+  );
+}
+
 const getSnapshot = (): Session | null => {
   return session;
 }
@@ -69,12 +90,6 @@ const subscribe = (listener: any) => {
   return () => {
     listeners = listeners.filter((l) => l !== listener);
   };
-};
-
-const lockSession = async (): Promise<void> => {
-  await vault.lock();
-  session = null;
-  emitChange();
 };
 
 const emitChange = () => {
@@ -97,4 +112,6 @@ export {
   clearSession,
   updateUnlockMode,
   lockSession,
+  unlockSession,
+  sessionIsLocked,
 }
