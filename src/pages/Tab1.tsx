@@ -13,9 +13,17 @@ import ExploreContainer from '../components/ExploreContainer';
 import './Tab1.css';
 import { useSyncExternalStore } from 'react';
 import { getSession, setSession, clearSession, lockSession, updateUnlockMode, subscribe, getSnapshot } from '../util/session-vault';
+import { logout } from '../util/authentication';
+import { useIonRouter } from '@ionic/react';
 
 const Tab1: React.FC = () => {
+  const router = useIonRouter()
   const session = useSyncExternalStore(subscribe, getSnapshot)
+
+  const logoutClicked = async (): Promise<void> => {
+    await logout();
+    router.push('/')
+  }
 
   const storeClicked = async (): Promise<void> => {
     await setSession({
@@ -40,17 +48,11 @@ const Tab1: React.FC = () => {
             <IonTitle size="large">Tab 1</IonTitle>
           </IonToolbar>
         </IonHeader>
-
-        <IonItem>
-            <IonLabel>
-              <IonButton expand="block" color="warning" onClick={getSession}>Unlock</IonButton>
-            </IonLabel>
-          </IonItem>
         
         <IonList>
           <IonItem>
             <IonLabel>
-              <IonButton expand="block" onClick={storeClicked}>Store</IonButton>
+              <IonButton expand="block" onClick={logoutClicked}>Logout</IonButton>
             </IonLabel>
           </IonItem>
 
